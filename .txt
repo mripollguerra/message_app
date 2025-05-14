@@ -1,0 +1,3 @@
+### Alembic migration ###
+1- generar las primeras migration: alembic revision --autogenerate -m "create companies and roles tables"
+2- ejecutar la migracion: alembic upgrade head

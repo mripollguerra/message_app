@@ -1,8 +1,6 @@
 from pydantic import BaseModel, Field
-    
-class AuthRequest(BaseModel):
-    email: str = Field(...)
-    password: str = Field(...)
+from typing import  List
+from api.v1.message.model import ProviderRequest
     
 class CompanyCreateRequest(BaseModel):
     role_id: int = Field(...)
@@ -10,3 +8,6 @@ class CompanyCreateRequest(BaseModel):
     email: str = Field(...)
     phone: str = Field(...)
     password: str = Field(...)
+    
+class AddProviderRequest(BaseModel):
+    providers: List[ProviderRequest] = Field(...)

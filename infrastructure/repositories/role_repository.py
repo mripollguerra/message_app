@@ -11,4 +11,4 @@ class RoleRepository(IRoleRepository):
         role = self.session.query(Role).filter(Role.id == role_id).first()
         
         # If the role is not found, return None
-        return None if role is None else role.to_domain_role(role)
+        return None if role is None else role.to_domain_role()

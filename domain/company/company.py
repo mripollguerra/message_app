@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 from domain.role.role import Role
-from typing import Optional
+from domain.message.provider import Provider
+from typing import Optional, List
 
 @dataclass
 class Company:
@@ -17,6 +18,7 @@ class Company:
     created_at: Optional[datetime] = None
     is_active: Optional[bool] = True
     role: Optional["Role"] = None
+    providers: Optional[List[Provider]] = None
     
     def check_password(self, password: str) -> bool:
         return self.password == password

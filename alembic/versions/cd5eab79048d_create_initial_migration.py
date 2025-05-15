@@ -1,8 +1,8 @@
-"""create companies and roles tables
+"""create initial migration
 
-Revision ID: 79f5cfc9de9e
+Revision ID: cd5eab79048d
 Revises: 
-Create Date: 2025-05-14 11:19:53.073157
+Create Date: 2025-05-15 10:21:06.537669
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '79f5cfc9de9e'
+revision: str = 'cd5eab79048d'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -39,11 +39,20 @@ def upgrade() -> None:
     sa.Column('api_key', sa.String(), nullable=True),
     sa.Column('secret_key', sa.String(), nullable=True),
     sa.Column('role_id', sa.Integer(), nullable=True),
+    sa.Column('providers', sa.JSON(), nullable=True),
     sa.ForeignKeyConstraint(['role_id'], ['roles.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('api_key')
     )
     op.create_index(op.f('ix_companies_id'), 'companies', ['id'], unique=False)
+    op.create_table('providers',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('service_name', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_providers_id'), 'providers', ['id'], unique=False)
     # ### end Alembic commands ###
 
 
@@ -54,4 +63,6 @@ def downgrade() -> None:
     op.drop_table('companies')
     op.drop_index(op.f('ix_roles_id'), table_name='roles')
     op.drop_table('roles')
+    op.drop_index(op.f('ix_providers_id'), table_name='providers')
+    op.drop_table('providers')
     # ### end Alembic commands ###

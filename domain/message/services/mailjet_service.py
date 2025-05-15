@@ -1,10 +1,10 @@
 from domain.message.service import IMessageService
 from config.settings import settings
 
-class EmailService(IMessageService):
+class MailjetService(IMessageService):
     def __init__(self):
-        self.email = settings.EMAIL_ADDRESS
-        self.password = settings.EMAIL_PASSWORD
+        self.email = settings.MAILJET_ADDRESS
+        self.password = settings.MAILJET_PASSWORD
 
     def SendMessage(self) -> bool:
         print("Sending email")

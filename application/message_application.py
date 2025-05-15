@@ -1,9 +1,9 @@
 from typing import List, Dict, Any
-from domain.message.factory import MessageServiceFactory
-from domain.message.provider import Provider
+from domain.message.message_factory import MessageFactory
+from domain.message.message_provider import MessageProvider
 
 class MessageApplication:
-    def __init__(self, message_service_factory: MessageServiceFactory):
+    def __init__(self, message_service_factory: MessageFactory):
         self.message_service_factory = message_service_factory
 
     def send_messages(self, service_types: str, company_id: int) -> List[Dict[str, Any]]:
@@ -18,5 +18,5 @@ class MessageApplication:
                 results.append({"service_type": service_type, "success": success})
         return results
     
-    def get_providers(self) -> List[Provider]:
-        return Provider.get_providers()
+    def get_providers(self) -> List[MessageProvider]:
+        return MessageProvider.get_providers()

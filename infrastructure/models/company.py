@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
 from domain.company.company import Company as CompanyDomain
 from domain.role.role import Role as RoleDomain
-from domain.message.provider import Provider as ProviderDomain
+from domain.message.message_provider import MessageProvider as MessageProviderDomain
 from sqlalchemy.orm import relationship
 from infrastructure.db.base import Base
 from .role import Role
@@ -25,7 +25,7 @@ class Company(Base):
     role = relationship("Role", back_populates="companies")
     
     def to_domain_company(self) -> CompanyDomain:
-        providers = [ProviderDomain(**p) for p in self.providers or []]
+        providers = [MessageProviderDomain(**p) for p in self.providers or []]
         
         return CompanyDomain(
             id=self.id,

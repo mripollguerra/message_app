@@ -1,4 +1,4 @@
-from domain.message.service import IMessageService
+from domain.message.message_service import IMessageService
 from infrastructure.db.session import SessionLocal
 
 class MessageService(IMessageService):

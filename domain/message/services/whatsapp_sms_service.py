@@ -1,4 +1,4 @@
-from domain.message.service import IMessageService
+from domain.message.message_service import IMessageService
 from config.settings import settings
 
 class WhatsAppSmsService(IMessageService):

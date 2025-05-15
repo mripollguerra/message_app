@@ -3,7 +3,7 @@ from infrastructure.repositories.company_repository import CompanyRepository
 from infrastructure.repositories.role_repository import RoleRepository
 from application.company_application import CompanyApplication
 from application.message_application import MessageApplication
-from domain.message.factory import MessageServiceFactory
+from domain.message.message_factory import MessageFactory
 
 class Container(containers.DeclarativeContainer):
     company_service = providers.Factory(
@@ -13,5 +13,5 @@ class Container(containers.DeclarativeContainer):
     )
     message_application = providers.Factory(
         MessageApplication,
-        message_service_factory=providers.Factory(MessageServiceFactory)
+        message_service_factory=providers.Factory(MessageFactory)
     )

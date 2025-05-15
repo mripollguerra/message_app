@@ -5,12 +5,12 @@ from api.v1.company.model import CompanyCreateRequest
 from utils.key_generator import KeyGenerator
 
 class CompanyApplication:
-    def __init__(self, companyRepository: ICompanyRepository, roleRepository: IRoleRepository):
-        self.companyRepository = companyRepository
-        self.roleRepository = roleRepository
+    def __init__(self, company_repository: ICompanyRepository, role_repository: IRoleRepository):
+        self.company_repository = company_repository
+        self.role_repository = role_repository
         
     def auth_company_by_email_password(self, email: str, password: str) -> Company:
-        company = self.companyRepository.get_company_by_email(email)
+        company = self.company_repository.get_company_by_email(email)
         if company is None:
             raise ValueError("Invalid credentials")
         
@@ -20,7 +20,7 @@ class CompanyApplication:
         return company
     
     def auth_company_by_keys(self, api_key: str, secret_key: str) -> Company:
-        company = self.companyRepository.get_company_by_api_key(api_key)
+        company = self.company_repository.get_company_by_api_key(api_key)
         if company is None:
             raise ValueError("Invalid credentials")
         
@@ -30,17 +30,17 @@ class CompanyApplication:
         return company
     
     def get_company_by_email(self, email: str) -> Company:
-        company = self.companyRepository.get_company_by_email(email)
+        company = self.company_repository.get_company_by_email(email)
         if company is None:
             raise ValueError("Company not found")
         
         return company
 
     def get_companies(self):
-        return self.companyRepository.get_companies()
+        return self.company_repository.get_companies()
     
     def create_company(self, request: CompanyCreateRequest) -> int:
-        role = self.roleRepository.get_role_by_id(request.role_id)
+        role = self.role_repository.get_role_by_id(request.role_id)
         if role is None:
             raise ValueError(f"Role with id {request.role_id} not found")
         
@@ -52,10 +52,10 @@ class CompanyApplication:
             password=request.password
         )
         
-        return self.companyRepository.create_company(entity_company)
+        return self.company_repository.create_company(entity_company)
     
     def request_keys(self, company_id: int) -> {str, str}:
-        company = self.companyRepository.get_company_by_id(company_id)
+        company = self.company_repository.get_company_by_id(company_id)
         if company is None:
             raise ValueError("Company not found")
         
@@ -64,7 +64,7 @@ class CompanyApplication:
         
         api_key, secret_key = KeyGenerator.generate_api_credentials()
         
-        company_updated = self.companyRepository.update_api_credentials(
+        company_updated = self.company_repository.update_api_credentials(
             company_id=company_id,
             api_key=api_key,
             secret_key=secret_key
@@ -76,7 +76,7 @@ class CompanyApplication:
         return {api_key, secret_key}
     
     def get_company_by_id(self, company_id: int) -> Company:
-        company = self.companyRepository.get_company_by_id(company_id)
+        company = self.company_repository.get_company_by_id(company_id)
         if company is None:
             raise ValueError("Company not found")
         

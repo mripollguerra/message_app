@@ -45,14 +45,6 @@ def upgrade() -> None:
     sa.UniqueConstraint('api_key')
     )
     op.create_index(op.f('ix_companies_id'), 'companies', ['id'], unique=False)
-    op.create_table('providers',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('service_name', sa.String(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_index(op.f('ix_providers_id'), 'providers', ['id'], unique=False)
     # ### end Alembic commands ###
 
 
@@ -63,6 +55,4 @@ def downgrade() -> None:
     op.drop_table('companies')
     op.drop_index(op.f('ix_roles_id'), table_name='roles')
     op.drop_table('roles')
-    op.drop_index(op.f('ix_providers_id'), table_name='providers')
-    op.drop_table('providers')
     # ### end Alembic commands ###

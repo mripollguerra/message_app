@@ -1,12 +1,9 @@
 from pydantic_settings import BaseSettings
 
 class ServiceConfig(BaseSettings):
-    TWILIO_API_KEY: str
-    TWILIO_SECRET_KEY: str
-    MAILJET_ADDRESS: str
-    MAILJET_PASSWORD: str
-    WHATSAPP_API_URL: str
-    WHATSAPP_TOKEN: str
+    TWILIO_ACCOUNT_SID: str
+    TWILIO_ACCOUNT_TOKEN: str
+    TWILIO_PHONE_NUMBER: str
 
     class Config:
         env_file = ".env"

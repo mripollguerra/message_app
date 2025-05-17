@@ -11,7 +11,6 @@ from infrastructure.models.company import Company
 def seed():
     session = SessionLocal()
 
-    # Opcional: evitar duplicados
     if session.query(Role).count() == 0:
         roles = [
             Role(name="Super Administrator", created_at=datetime.datetime.utcnow()),

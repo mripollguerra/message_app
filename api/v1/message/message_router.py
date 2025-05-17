@@ -22,7 +22,7 @@ def send_message(
     except ValueError as e:
         return ResponseHandler.error(message=str(e), code=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return ResponseHandler.error(message="Internal server error", code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return ResponseHandler.error(message=str(e), code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @router.get("/providers/")
 @inject

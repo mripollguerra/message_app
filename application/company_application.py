@@ -1,7 +1,7 @@
 from domain.company.company_repository import ICompanyRepository
 from domain.company.company import Company
 from domain.role.role_repository import IRoleRepository
-from api.v1.company.model import CompanyCreateRequest
+from api.v1.company.model import CompanyCreateRequest, AddProviderRequest
 from utils.key_generator import KeyGenerator
 
 class CompanyApplication:
@@ -81,3 +81,18 @@ class CompanyApplication:
             raise ValueError("Company not found")
         
         return company
+    
+    def add_provider_by_company_id(self, request: AddProviderRequest, company_id: int) -> bool:
+        company = self.company_repository.get_company_by_id(company_id)
+        if company is None:
+            raise ValueError("Company not found")
+        
+        company.providers = request.providers
+        
+        company_updated = self.company_repository.add_provider_by_company_id(
+            company_id=company_id,
+            company=company
+        )
+        
+        if company_updated is None:
+            raise ValueError("Add providers failed")

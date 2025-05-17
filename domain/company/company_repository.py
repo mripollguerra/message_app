@@ -26,3 +26,7 @@ class ICompanyRepository(ABC):
     @abstractmethod
     def update_api_credentials(self, company_id: int, api_key: str, secret_key: str) -> Company | None:
         pass
+    
+    @abstractmethod
+    def add_provider_by_company_id(self, company_id: int, company: Company) -> Company | None:
+        pass

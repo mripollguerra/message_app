@@ -13,5 +13,6 @@ class Container(containers.DeclarativeContainer):
     )
     message_application = providers.Factory(
         MessageApplication,
-        message_service_factory=providers.Factory(MessageFactory)
+        message_service_factory=providers.Factory(MessageFactory),
+        company_repository=providers.Factory(CompanyRepository),
     )

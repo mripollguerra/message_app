@@ -93,7 +93,8 @@ def add_provider(
     ):
     
     try:
-        return ResponseHandler.success(data=providers, message="Security keys generated", code=status.HTTP_201_CREATED)
+        result = company_service.add_provider_by_company_id(providers, company.id)
+        return ResponseHandler.success(data=result, message="Providers add to company", code=status.HTTP_201_CREATED)
     except ValueError as e:
         return ResponseHandler.error(message=str(e), code=status.HTTP_404_NOT_FOUND)
     except Exception as e:

@@ -1,23 +1,24 @@
-from fastapi import APIRouter, Depends, status, Header
-from api.security.jwt_service import JWTService
+from fastapi import APIRouter, Depends, status, Header, Body
 from containers import Container
 from dependency_injector.wiring import inject, Provide
 from utils.response_handler import ResponseHandler
 from api.security.auth_dependency import authenticate_user
 from application.message_application import MessageApplication
+from typing import Dict, Any
 
 router = APIRouter(prefix="/message", tags=["Message"])
 
 @router.post("/send/")
 @inject
 def send_message(
+        raw_body: Dict[str, Any] = Body(...),
         x_services_name: str = Header(default=None),
         message_application: MessageApplication = Depends(Provide[Container.message_application]),
         company = Depends(authenticate_user)
     ):
     
     try:
-        results = message_application.send_messages(x_services_name, company.id)
+        results = message_application.send_messages(x_services_name, company.id, raw_body)
         return ResponseHandler.success(data=results, message="Providers", code=status.HTTP_201_CREATED)
     except ValueError as e:
         return ResponseHandler.error(message=str(e), code=status.HTTP_404_NOT_FOUND)

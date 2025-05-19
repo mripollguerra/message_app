@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, Path
 from application.company_application import CompanyApplication
-from api.v1.company.model import CompanyCreateRequest, AddProviderRequest
+from api.v1.company.model import CompanyCreateRequest, CompanyAddProviderRequest
 from containers import Container
 from dependency_injector.wiring import inject, Provide
 from utils.response_handler import ResponseHandler
@@ -87,7 +87,7 @@ def request_keys(
 @router.post("/add-provider/")
 @inject
 def add_provider(
-        providers: AddProviderRequest,
+        providers: CompanyAddProviderRequest,
         company_service: CompanyApplication = Depends(Provide[Container.company_service]),
         company = Depends(authenticate_user)
     ):

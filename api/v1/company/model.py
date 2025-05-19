@@ -9,5 +9,5 @@ class CompanyCreateRequest(BaseModel):
     phone: str = Field(...)
     password: str = Field(...)
     
-class AddProviderRequest(BaseModel):
+class CompanyAddProviderRequest(BaseModel):
     providers: List[ProviderRequest] = Field(...)

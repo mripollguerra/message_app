@@ -4,6 +4,7 @@ class ServiceConfig(BaseSettings):
     TWILIO_ACCOUNT_SID: str
     TWILIO_ACCOUNT_TOKEN: str
     TWILIO_PHONE_NUMBER: str
+    DATABASE_URL: str
 
     class Config:
         env_file = ".env"

@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 from domain.message.message_factory import MessageFactory
-from domain.message.message_provider import MessageProvider
+from domain.message_provider.message_provider import MessageProvider
 from domain.company.company_repository import ICompanyRepository
 from pydantic import ValidationError
 from fastapi.exceptions import RequestValidationError

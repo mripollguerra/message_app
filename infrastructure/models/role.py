@@ -13,7 +13,7 @@ class Role(Base):
     
     companies = relationship("Company", back_populates="role")
     
-    def to_domain_role(self) -> RoleDomain:
+    def to_domain(self) -> RoleDomain:
         return RoleDomain(
                 id=self.id,
                 name=self.name,

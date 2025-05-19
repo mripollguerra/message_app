@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from domain.role.role import Role
-from domain.message.message_provider import MessageProvider
+from domain.message_provider.message_provider import MessageProvider
 from typing import Optional, List
 
 @dataclass

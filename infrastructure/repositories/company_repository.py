@@ -10,7 +10,10 @@ class CompanyRepository(ICompanyRepository):
         self.session = SessionLocal()
         
     def get_company_by_email(self, email: str) -> CompanyDomain | None:
-        company = self.session.query(Company).filter(Company.email == email).first()
+        company = self.session.query(Company).filter(
+            (Company.email == email) & (Company.is_active == True)
+        ).first()
+        
         if company is None:
             return None
         
@@ -48,7 +51,7 @@ class CompanyRepository(ICompanyRepository):
         return entity_company.id
     
     def update_api_credentials(self, company_id: int, api_key: str, secret_key: str) -> CompanyDomain | None:
-        company = self.session.query(Company).filter(Company.id == company_id).first()
+        company = self.session.query(Company).filter(Company.id == company_id and Company.is_active == True).first()
 
         if not company:
             raise None
@@ -62,20 +65,51 @@ class CompanyRepository(ICompanyRepository):
         return company.to_domain()
     
     def get_company_by_api_key(self, api_key: str) -> CompanyDomain | None:
-        company = self.session.query(Company).filter(Company.api_key == api_key).first()
+        company = self.session.query(Company).filter(
+            (Company.api_key == api_key) & (Company.is_active == True)
+        ).first()
+        
         if company is None:
             return None
         
         return company.to_domain()
     
     def add_provider_by_company_id(self, company_id: int, company: CompanyDomain) -> CompanyDomain | None:
-        companyModel = self.session.query(Company).filter(Company.id == company_id).first()
+        companyModel = self.session.query(Company).filter(Company.id == company_id and Company.is_active == True).first()
 
         if not companyModel:
             raise None
 
         companyModel.providers = jsonable_encoder(company.providers)
 
+        self.session.commit()
+        self.session.refresh(companyModel)
+        
+        return companyModel.to_domain()
+    
+    def active_company(self, company_id: int) -> CompanyDomain | None:
+        company = self.session.query(Company).filter(Company.id == company_id).first()
+
+        if not company:
+            raise None
+
+        company.is_active = not company.is_active
+
+        self.session.commit()
+        self.session.refresh(company)
+
+        return company.to_domain()
+    
+    def update_company(self, company: CompanyDomain) -> CompanyDomain | None:
+        companyModel = self.session.query(Company).filter(Company.id == company.id).first()
+        if not companyModel:
+            raise None
+        
+        companyModel.name = company.name
+        companyModel.email = company.email
+        companyModel.phone = company.phone
+        companyModel.role_id = company.role_id
+        
         self.session.commit()
         self.session.refresh(companyModel)
         

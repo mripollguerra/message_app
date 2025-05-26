@@ -19,11 +19,11 @@ def send_message(
     
     try:
         results = message_application.send_messages(x_services_name, company.id, raw_body)
-        return ResponseHandler.success(data=results, message="Providers", code=status.HTTP_201_CREATED)
+        return ResponseHandler.success(data=results, message="Mensaje enviado", code=status.HTTP_201_CREATED)
     except ValueError as e:
         return ResponseHandler.error(message=str(e), code=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return ResponseHandler.error(message=str(e), code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return ResponseHandler.error(message="Internal server error", code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @router.get("/providers/")
 @inject
@@ -34,8 +34,8 @@ def get_providers(
     
     try:
         providers = message_application.get_providers()
-        return ResponseHandler.success(data=providers, message="Providers", code=status.HTTP_201_CREATED)
+        return ResponseHandler.success(data=providers, message="Servicios de envios", code=status.HTTP_201_CREATED)
     except ValueError as e:
         return ResponseHandler.error(message=str(e), code=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return ResponseHandler.error(message=str(e), code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return ResponseHandler.error(message="Internal server error", code=status.HTTP_500_INTERNAL_SERVER_ERROR)

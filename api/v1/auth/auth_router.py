@@ -18,7 +18,7 @@ def sig_in(
     try:
         company = service.auth_company_by_email_password(request.email, request.password)
         token = JWTService.create_access_token({"sub": company.email})
-        return ResponseHandler.success(data={"access_token": token, "token_type": "bearer"}, message="Companies", code=status.HTTP_201_CREATED)
+        return ResponseHandler.success(data={"access_token": token, "token_type": "bearer"}, message="Inicio de sesión correcto", code=status.HTTP_201_CREATED)
     except ValueError as e:
         return ResponseHandler.error(message=str(e), code=status.HTTP_404_NOT_FOUND)
     except Exception as e:

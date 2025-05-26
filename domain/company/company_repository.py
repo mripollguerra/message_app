@@ -30,3 +30,10 @@ class ICompanyRepository(ABC):
     @abstractmethod
     def add_provider_by_company_id(self, company_id: int, company: Company) -> Company | None:
         pass
+    
+    @abstractmethod
+    def active_company(self, company_id: int) -> Company | None:
+        pass
+    
+    def update_company(self, company: Company) -> Company | None:
+        pass

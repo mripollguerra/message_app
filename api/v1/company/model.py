@@ -11,3 +11,9 @@ class CompanyCreateRequest(BaseModel):
     
 class CompanyAddProviderRequest(BaseModel):
     providers: List[ProviderRequest] = Field(...)
+    
+class CompanyUpdateRequest(BaseModel):
+    role_id: int = Field(...)
+    name: str = Field(...)
+    phone: str = Field(...)
+    email: str = Field(...)

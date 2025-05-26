@@ -1,7 +1,7 @@
 from domain.company.company_repository import ICompanyRepository
 from domain.company.company import Company
 from domain.role.role_repository import IRoleRepository
-from api.v1.company.model import CompanyCreateRequest, CompanyAddProviderRequest
+from api.v1.company.model import CompanyCreateRequest, CompanyAddProviderRequest, CompanyUpdateRequest
 from utils.key_generator import KeyGenerator
 
 class CompanyApplication:
@@ -96,3 +96,53 @@ class CompanyApplication:
         
         if company_updated is None:
             raise ValueError("Add providers failed")
+        
+    def active_company(self, company_id: int) -> Company:
+        company = self.company_repository.get_company_by_id(company_id)
+        if company is None:
+            raise ValueError("Company not found")
+        
+        company = self.company_repository.active_company(company_id)
+        if company is None:
+            raise ValueError("Activating company failed")
+        
+        return company
+    
+    def update_company(self, company_id: int, request: CompanyUpdateRequest) -> Company:
+        company = self.company_repository.get_company_by_id(company_id)
+        if company is None:
+            raise ValueError("Company not found")
+        
+        if request.role_id is not None:
+            role = self.role_repository.get_role_by_id(request.role_id)
+            if role is None:
+                raise ValueError(f"Role with id {request.role_id} not found")
+            company.role_id = request.role_id
+        
+        company.name = request.name or company.name
+        company.email = request.email or company.email
+        company.phone = request.phone or company.phone
+        
+        updated_company = self.company_repository.update_company(company)
+        if updated_company is None:
+            raise ValueError("Updating company failed")
+        
+        return updated_company
+    
+    def update_request_keys(self, company_id: int) -> {str, str}:
+        company = self.company_repository.get_company_by_id(company_id)
+        if company is None:
+            raise ValueError("Company not found")
+        
+        api_key, secret_key = KeyGenerator.generate_api_credentials()
+        
+        company_updated = self.company_repository.update_api_credentials(
+            company_id=company_id,
+            api_key=api_key,
+            secret_key=secret_key
+        )
+        
+        if company_updated is None:
+            raise ValueError("Generating keys failed")
+        
+        return {api_key, secret_key}

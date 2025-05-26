@@ -1,0 +1,60 @@
+### Alembic migration ###
+1- generar las primeras migration: alembic revision --autogenerate -m "create companies and roles tables"
+2- ejecutar la migracion: alembic upgrade head
+
+
+
+actualizar imagen: docker-compose build
+push de la imagen: docker push moisesrgml/gml-message-app:latest
+correr una imagen: docker run -d -p 8000:8000 messageapp-api
+
+ver los contenedores: docker ps
+ver logs: docker logs <contenedor ID>
+detenear los contenedor: docker stop <contenedor ID>,<contenedor ID>
+eliminar los contenedor: docker rm <contenedor ID>,<contenedor ID>
+ingresar a un contenedor: docker exec -it <contenedor ID> sh
+ingresar a posgres: docker exec -it <contenedor ID> psql -U admin -d message_app
+
+
+archivo docker-compose.yml
+
+version: '3.8'
+
+services:
+  api:
+    image: moisesrgml/gml-message-app:latest
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=message_app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
+
+archivo .env
+
+TWILIO_ACCOUNT_SID=AC02e95815d6978b0745dd4bfa70edceff
+TWILIO_ACCOUNT_TOKEN=866a596450a9e3bc545f693a564f46d2
+TWILIO_PHONE_NUMBER=+15715068736
+DATABASE_URL=postgresql+psycopg2://admin:123@db:5432/message_app

@@ -13,6 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia el resto del código al contenedor
 COPY . .
 
+# Copia el archivo example.env a .env dentro del contenedor
+RUN cp example.env .env && rm -f example.env
+
 # Expone el puerto que usará FastAPI
 EXPOSE 8000
 
